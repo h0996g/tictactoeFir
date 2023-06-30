@@ -8,13 +8,13 @@ import 'package:tictactoefir/shared/components/components.dart';
 import 'package:tictactoefir/offline/game.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
+import 'online/room.dart';
+
 class About extends StatelessWidget {
   const About({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Random rnd;
-
     // Size size = MediaQuery.of(context).size;
 
     Button3d b1 = Button3d(
@@ -31,7 +31,7 @@ class About extends StatelessWidget {
         ));
     Button3d b2 = Button3d(
         onTap: () {
-          navigatAndReturn(context: context, page: Online());
+          navigatAndReturn(context: context, page: Room());
         },
         text: const Text(
           'Online',

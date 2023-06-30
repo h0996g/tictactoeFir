@@ -2,6 +2,10 @@ abstract class OnlineState {}
 
 class OnlineInitial extends OnlineState {}
 
+class GetRandomNumberState extends OnlineState {}
+
+class GetMessageDataStateGood extends OnlineState {}
+
 class LogicInitial extends OnlineState {}
 
 class ResetValueState extends OnlineState {}

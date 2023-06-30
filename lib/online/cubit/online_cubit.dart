@@ -12,21 +12,68 @@ class OnlineCubit extends Cubit<OnlineState> {
   static OnlineCubit get(context) => BlocProvider.of(context);
   var rng = Random();
   int? id;
-  void startGame() {
-    id = 12345;
-    // rng.nextInt(1000);
-    FirebaseFirestore.instance.collection('user').doc(id.toString()).set(
-        // random as Map<String, dynamic>,
-        {
-          '1': false,
-          '2': false,
-          '3': false,
-          '4': false,
-          '5': false,
-          '6': false,
-          '7': false,
-          '8': false,
-        });
+  void getRandom() {
+    id = rng.nextInt(10000);
+
+    // FirebaseFirestore.instance.collection('user').doc(id.toString()).set(
+    //     // random as Map<String, dynamic>,
+    //     {
+    //       '1': false,
+    //       '2': false,
+    //       '3': false,
+    //       '4': false,
+    //       '5': false,
+    //       '6': false,
+    //       '7': false,
+    //       '8': false,
+    //     });
+
+    emit(GetRandomNumberState());
+  }
+
+  Future<void> creeRoom() async {
+    List yourItemList = [];
+    for (int i = 1; i <= 9; i++) {
+      yourItemList.add({'$i': false});
+    }
+    await FirebaseFirestore.instance.collection('Room').doc(id.toString()).set({
+      'wait': true,
+      "p1Turn": true,
+      'player 1': FieldValue.arrayUnion(yourItemList)
+    });
+
+    // .set({'wait': true});
+  }
+
+  joinRoom(String idRoom) async {
+    List yourItemList = [];
+    for (int i = 1; i <= 9; i++) {
+      yourItemList.add({'$i': false});
+    }
+    await FirebaseFirestore.instance.collection('Room').doc(idRoom).update({
+      'wait': false,
+      "p1Turn": true,
+      'player 2': FieldValue.arrayUnion(yourItemList)
+    }).then((value) {
+      id = int.parse(idRoom);
+    }).catchError((e) {
+      print('hhhhh');
+      print(e.toString());
+    });
+  }
+
+  Map<String, dynamic>? allcase = {};
+
+  void lisnerStartGame(String idRoom) {
+    FirebaseFirestore.instance
+        .collection('Room')
+        .doc(idRoom)
+        .snapshots()
+        .listen((event) {
+      print(event.data());
+      allcase = event.data();
+    });
+    emit(GetMessageDataStateGood());
   }
 
   bool iswinner = false;

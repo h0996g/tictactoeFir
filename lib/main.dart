@@ -27,9 +27,12 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => LogicCubit(),
+          // lazy: false,
         ),
         BlocProvider(
-          create: (context) => OnlineCubit()..startGame(),
+          create: (context) => OnlineCubit(),
+          // lazy: false,
+          // ..getRandom(),
         ),
       ],
       child: const MaterialApp(
