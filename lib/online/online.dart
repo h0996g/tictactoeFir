@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tictactoefir/button.dart';
+import 'package:tictactoefir/shared/button.dart';
 import 'package:tictactoefir/online/cubit/online_cubit.dart';
 import 'package:tictactoefir/online/cubit/online_state.dart';
 

@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../gamebutton.dart';
+import '../../shared/gamebutton.dart';
 import 'logic_state.dart';
 
 class LogicCubit extends Cubit<LogicState> {

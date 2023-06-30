@@ -2,10 +2,10 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:tictactoefir/button.dart';
+import 'package:tictactoefir/shared/button.dart';
 import 'package:tictactoefir/online/online.dart';
 import 'package:tictactoefir/shared/components/components.dart';
-import 'package:tictactoefir/test.dart';
+import 'package:tictactoefir/offline/game.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class About extends StatelessWidget {
@@ -20,7 +20,7 @@ class About extends StatelessWidget {
     Button3d b1 = Button3d(
         onTap: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Test()));
+              context, MaterialPageRoute(builder: (context) => Offline()));
         },
         color1: Colors.yellow[300],
         color2: Colors.yellow,

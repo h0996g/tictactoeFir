@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tictactoefir/about.dart';
-import 'package:tictactoefir/cubit/logic_cubit.dart';
+import 'package:tictactoefir/offline/cubit/logic_cubit.dart';
 import 'package:tictactoefir/online/cubit/online_cubit.dart';
 
 import 'firebase_options.dart';

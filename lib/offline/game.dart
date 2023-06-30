@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tictactoefir/button.dart';
+import 'package:tictactoefir/shared/button.dart';
 
 import 'cubit/logic_cubit.dart';
 import 'cubit/logic_state.dart';
 
-class Test extends StatelessWidget {
-  Test({Key? key}) : super(key: key);
+class Offline extends StatelessWidget {
+  Offline({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

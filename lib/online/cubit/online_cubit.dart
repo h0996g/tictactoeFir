@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../gamebutton.dart';
+import '../../shared/gamebutton.dart';
 import 'online_state.dart';
 
 class OnlineCubit extends Cubit<OnlineState> {
