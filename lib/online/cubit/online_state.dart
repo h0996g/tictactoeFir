@@ -8,7 +8,11 @@ class GetMessageDataStateGood extends OnlineState {}
 
 class LogicInitial extends OnlineState {}
 
-class ResetValueState extends OnlineState {}
+class PlayAgainResetValueState extends OnlineState {}
+
+class EndGameResetValueState extends OnlineState {}
+
+class GodByState extends OnlineState {}
 
 class P2PlayState extends OnlineState {}
 
@@ -35,3 +39,7 @@ class ColorSwitchState extends OnlineState {}
 class KState extends OnlineState {}
 
 class MState extends OnlineState {}
+
+class IswaitinFalseGoodState extends OnlineState {}
+
+class IswaitinFalseBadState extends OnlineState {}

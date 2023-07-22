@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tictactoefir/online/room.dart';
 import 'package:tictactoefir/shared/button.dart';
 import 'package:tictactoefir/online/cubit/online_cubit.dart';
 import 'package:tictactoefir/online/cubit/online_state.dart';
@@ -14,6 +15,62 @@ class Online extends StatelessWidget {
       body: SafeArea(
         child: BlocConsumer<OnlineCubit, OnlineState>(
           listener: (context, state) {
+            if (state is GetMessageDataStateGood) {
+              if (OnlineCubit.get(context).allcase!['win'] == 'P1' ||
+                  OnlineCubit.get(context).allcase!['win'] == 'P2' ||
+                  OnlineCubit.get(context).allcase!['win'] == 'tied') {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        content: Text(
+                          OnlineCubit.get(context).allcase!['win'] == 'P1'
+                              ? 'Player one won'
+                              : OnlineCubit.get(context).allcase!['win'] == 'P2'
+                                  ? 'player two won'
+                                  : OnlineCubit.get(context).allcase!['win'] ==
+                                          'tied'
+                                      ? 'DRAW'
+                                      : '',
+                          style: TextStyle(
+                              color: OnlineCubit.get(context).allcase!['win'] ==
+                                          'p2' &&
+                                      !OnlineCubit.get(context).twopl
+                                  ? Colors.blue
+                                  : OnlineCubit.get(context).allcase!['win'] ==
+                                          'tied'
+                                      ? Colors.brown
+                                      : OnlineCubit.get(context).xomessage,
+                              fontSize: 30,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        actions: [
+                          TextButton(
+                            child: const Text(
+                              'Play Again!',
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.teal,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            onPressed: () {
+                              OnlineCubit.get(context).playAgainReset();
+
+                              Navigator.pop(context);
+                            },
+                          )
+                        ],
+                      );
+                    });
+              }
+            }
+
+            if (state is GodByState) {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => Room()),
+                  (route) => false);
+            }
             // TODO: implement listener
           },
           builder: (context, state) {
@@ -23,34 +80,17 @@ class Online extends StatelessWidget {
                   Expanded(
                     child: Center(
                       child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 20),
-                        height: 80,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: const Color(0xff246ee9)),
-                        child: Center(
-                          child: CheckboxListTile(
-                              secondary: const Icon(
-                                Icons.group,
-                                size: 50,
-                              ),
-                              title: const Text(
-                                'Multiplayer :',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                textAlign: TextAlign.start,
-                              ),
-                              value: OnlineCubit.get(context).twopl,
-                              onChanged: (b) {
-                                OnlineCubit.get(context).switchMultiPlayer(b!);
-
-                                OnlineCubit.get(context).reset();
-                              }),
-                        ),
-                      ),
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 30),
+                          height: 80,
+                          // decoration: BoxDecoration(
+                          //     borderRadius: BorderRadius.circular(30),
+                          //     color: Colors.grey[300]),
+                          child: Text(
+                            'Rom : ${OnlineCubit.get(context).id}',
+                            style: const TextStyle(
+                                fontSize: 30, fontWeight: FontWeight.w700),
+                          )),
                     ),
                   ),
                   Expanded(
@@ -92,76 +132,91 @@ class Online extends StatelessWidget {
                                     OnlineCubit.get(context).playGame(index);
                                   }
 
-                                  if (OnlineCubit.get(context).p1win ||
-                                      OnlineCubit.get(context).p2win ||
-                                      OnlineCubit.get(context).tied) {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            content: Text(
-                                              OnlineCubit.get(context).p1win
-                                                  ? 'Player one won'
-                                                  : OnlineCubit.get(context)
-                                                          .p2win
-                                                      ? 'player two won'
-                                                      : OnlineCubit.get(context)
-                                                              .tied
-                                                          ? 'DRAW'
-                                                          : '',
-                                              style: TextStyle(
-                                                  color: OnlineCubit.get(
-                                                                  context)
-                                                              .p2win &&
-                                                          !OnlineCubit.get(
-                                                                  context)
-                                                              .twopl
-                                                      ? Colors.blue
-                                                      : OnlineCubit.get(context)
-                                                              .tied
-                                                          ? Colors.brown
-                                                          : OnlineCubit.get(
-                                                                  context)
-                                                              .xomessage,
-                                                  fontSize: 30,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                            actions: [
-                                              TextButton(
-                                                child: const Text(
-                                                  'Play Again!',
-                                                  style: TextStyle(
-                                                      fontSize: 20,
-                                                      color: Colors.teal,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                onPressed: () {
-                                                  OnlineCubit.get(context)
-                                                          .xcountsave =
-                                                      OnlineCubit.get(context)
-                                                          .xcount;
-                                                  OnlineCubit.get(context)
-                                                          .ocountsave =
-                                                      OnlineCubit.get(context)
-                                                          .ocount;
-                                                  OnlineCubit.get(context)
-                                                      .reset();
-                                                  OnlineCubit.get(context)
-                                                          .xcount =
-                                                      OnlineCubit.get(context)
-                                                          .xcountsave;
-                                                  OnlineCubit.get(context)
-                                                          .ocount =
-                                                      OnlineCubit.get(context)
-                                                          .ocountsave;
-                                                  Navigator.pop(context);
-                                                },
-                                              )
-                                            ],
-                                          );
-                                        });
-                                  }
+                                  // if (OnlineCubit.get(context)
+                                  //             .allcase!['win'] ==
+                                  //         'P1' ||
+                                  //     OnlineCubit.get(context)
+                                  //             .allcase!['win'] ==
+                                  //         'P2' ||
+                                  //     OnlineCubit.get(context)
+                                  //             .allcase!['win'] ==
+                                  //         'tied') {
+                                  //   showDialog(
+                                  //       context: context,
+                                  //       builder: (context) {
+                                  //         return AlertDialog(
+                                  //           content: Text(
+                                  //             OnlineCubit.get(context)
+                                  //                         .allcase!['win'] ==
+                                  //                     'P1'
+                                  //                 ? 'Player one won'
+                                  //                 : OnlineCubit.get(context)
+                                  //                                 .allcase![
+                                  //                             'win'] ==
+                                  //                         'P2'
+                                  //                     ? 'player two won'
+                                  //                     : OnlineCubit.get(context)
+                                  //                                     .allcase![
+                                  //                                 'win'] ==
+                                  //                             'tied'
+                                  //                         ? 'DRAW'
+                                  //                         : '',
+                                  //             style: TextStyle(
+                                  //                 color: OnlineCubit.get(context)
+                                  //                                     .allcase![
+                                  //                                 'win'] ==
+                                  //                             'p2' &&
+                                  //                         !OnlineCubit.get(
+                                  //                                 context)
+                                  //                             .twopl
+                                  //                     ? Colors.blue
+                                  //                     : OnlineCubit.get(context)
+                                  //                                     .allcase![
+                                  //                                 'win'] ==
+                                  //                             'tied'
+                                  //                         ? Colors.brown
+                                  //                         : OnlineCubit.get(
+                                  //                                 context)
+                                  //                             .xomessage,
+                                  //                 fontSize: 30,
+                                  //                 fontWeight: FontWeight.w600),
+                                  //           ),
+                                  //           actions: [
+                                  //             TextButton(
+                                  //               child: const Text(
+                                  //                 'Play Again!',
+                                  //                 style: TextStyle(
+                                  //                     fontSize: 20,
+                                  //                     color: Colors.teal,
+                                  //                     fontWeight:
+                                  //                         FontWeight.bold),
+                                  //               ),
+                                  //               onPressed: () {
+                                  //                 OnlineCubit.get(context)
+                                  //                         .xcountsave =
+                                  //                     OnlineCubit.get(context)
+                                  //                         .xcount;
+                                  //                 OnlineCubit.get(context)
+                                  //                         .ocountsave =
+                                  //                     OnlineCubit.get(context)
+                                  //                         .ocount;
+                                  //                 OnlineCubit.get(context)
+                                  //                     .reset();
+                                  //                 OnlineCubit.get(context)
+                                  //                         .xcount =
+                                  //                     OnlineCubit.get(context)
+                                  //                         .xcountsave;
+                                  //                 OnlineCubit.get(context)
+                                  //                         .ocount =
+                                  //                     OnlineCubit.get(context)
+                                  //                         .ocountsave;
+                                  //                 Navigator.pop(context);
+                                  //               },
+                                  //             )
+                                  //           ],
+                                  //         );
+                                  //       });
+                                  // }
                                 },
                               );
                             },
@@ -209,7 +264,7 @@ class Online extends StatelessWidget {
                           child: Row(
                             children: [
                               Text(
-                                'Player One ${OnlineCubit.get(context).xcount} -',
+                                'Player One ${OnlineCubit.get(context).allcase!['scorP1']} -',
                                 style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 30,
@@ -217,7 +272,7 @@ class Online extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                ' ${OnlineCubit.get(context).ocount} Player Two',
+                                ' ${OnlineCubit.get(context).allcase!['scorP2']} Player Two',
                                 style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 30,
@@ -234,24 +289,18 @@ class Online extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Button3d(
-                            text: const Text(
-                              'New Game',
-                              style: TextStyle(
-                                  fontSize: 30, fontWeight: FontWeight.bold),
-                            ),
-                            onTap: () {
-                              //bah yb9a score..
-                              OnlineCubit.get(context).xcountsave =
-                                  OnlineCubit.get(context).xcount;
-                              OnlineCubit.get(context).ocountsave =
-                                  OnlineCubit.get(context).ocount;
-                              OnlineCubit.get(context).reset();
-                              OnlineCubit.get(context).xcount =
-                                  OnlineCubit.get(context).xcountsave;
-                              OnlineCubit.get(context).ocount =
-                                  OnlineCubit.get(context).ocountsave;
-                            }),
+                        // Button3d(
+                        //     text: const Text(
+                        //       'New Game',
+                        //       style: TextStyle(
+                        //           fontSize: 30, fontWeight: FontWeight.bold),
+                        //     ),
+                        //     onTap: () {
+                        //       //bah yb9a score..
+
+                        //       OnlineCubit.get(context).reset();
+                        //     }),
+
                         Button3d(
                           text: const Text(
                             "End Game",
@@ -259,7 +308,7 @@ class Online extends StatelessWidget {
                                 fontSize: 30, fontWeight: FontWeight.bold),
                           ),
                           onTap: () {
-                            OnlineCubit.get(context).reset();
+                            OnlineCubit.get(context).endGameReset();
                           },
                         ),
                       ],
