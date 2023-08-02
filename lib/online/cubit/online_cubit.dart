@@ -56,59 +56,46 @@ class OnlineCubit extends Cubit<OnlineState> {
   }
 
   Map<String, dynamic>? allcase = {};
-  bool test = false;
-  var a;
+  bool isStart = false;
+  // var a;
   Future<void> lisnerStartGame(String idRoom) async {
-    a = FirebaseFirestore.instance
+    FirebaseFirestore.instance
         .collection('Room')
         .doc(idRoom)
         .snapshots()
         .listen((event) {
-      // allcase = {};
       allcase = event.data() ?? {};
-      // checkWinner('O');
-      // checkNull();
-      // listButton.forEach((element) { });
       print(allcase);
       for (var i = 0; i < listButton.length; i++) {
-        // print(allcase!['$i']);
         listButton[i].str = allcase!['$i'];
         listButton[i].enabled = (allcase!['$i'] == '' ? true : false);
+        listButton[i].clr = (allcase!['$i'] == 'X'
+            ? Colors.red
+            : allcase!['$i'] == 'O'
+                ? Colors.green
+                : Colors.grey[300]);
       }
 
-      // print(allcase!['wating']);
       if (allcase!['wating'] == false) {
-        // print('hhhhhhhh');
-        test = true;
-        // emit(GetMessageDataStateGood());
+        isStart = true;
+      } else {
+        isStart = false;
       }
-      // print('Listen stream');
-      // print(allcase!['wating']);
       emit(GetMessageDataStateGood());
     });
   }
 
   bool iswinner = false;
   bool isnull = false;
-  bool twopl = true;
+  // bool twopl = true;
 
-  Color xomessage = Colors.red;
+  // Color xomessage = Colors.red;
   double l = 0, r = 0, t = 0, b = 0;
 
-  //pop//
-  //test//
-  // bool p1win = false;
-  // bool p2win = false;
-  // bool tied = false;
-
-  //pop//
   Random random = Random();
-  bool turn = true;
+  bool xTurn = true;
   int zher = 0;
 
-  // List<int> machineindex = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-  // var player1 = [];
-  // var player2 = [];
   List listButton = <GameButton>[
     GameButton(1),
     GameButton(2),
@@ -132,8 +119,8 @@ class OnlineCubit extends Cubit<OnlineState> {
     }
     iswinner = false;
     isnull = false;
-    turn = true;
-    xomessage = Colors.red;
+    xTurn = true;
+    // xomessage = Colors.red;
     await FirebaseFirestore.instance
         .collection('Room')
         .doc(id.toString())
@@ -167,11 +154,19 @@ class OnlineCubit extends Cubit<OnlineState> {
     }
     iswinner = false;
     isnull = false;
-    turn = true;
-    xomessage = Colors.red;
-    test = false;
-    a.cancel();
-    id = null;
+    xTurn = true;
+    isStart = false;
+    // a.cancel();
+    // isStart = false;
+    // int? idTemp=id;
+    await FirebaseFirestore.instance
+        .collection('Room')
+        .doc(id.toString())
+        .update({'wating': true});
+    await FirebaseFirestore.instance
+        .collection('Room')
+        .doc(id.toString())
+        .delete();
     emit(EndGameResetValueState());
   }
 
@@ -358,13 +353,13 @@ class OnlineCubit extends Cubit<OnlineState> {
       return;
     }
 
-    if (twopl) {
-      if (xomessage == Colors.red) {
-        xomessage = Colors.blue;
-      } else {
-        xomessage = Colors.red;
-      }
-      emit(ColorSwitchState());
-    }
+    // if (twopl) {
+    //   if (xomessage == Colors.red) {
+    //     xomessage = Colors.blue;
+    //   } else {
+    //     xomessage = Colors.red;
+    //   }
+    //   emit(ColorSwitchState());
+    // }
   }
 }

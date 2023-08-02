@@ -28,7 +28,7 @@ class Room extends StatelessWidget {
             },
             condition:
                 //  false,
-                OnlineCubit.get(context).test == true,
+                OnlineCubit.get(context).isStart == true,
             //  false,
             // OnlineCubit.get(context).allcase!['wating'] != null,
             //     OnlineCubit.get(context).allcase!['wating'] == true,
@@ -101,6 +101,7 @@ class Room extends StatelessWidget {
                           Button3d(
                             text: const Text('Donne'),
                             onTap: () {
+                              FocusManager.instance.primaryFocus?.unfocus();
                               OnlineCubit.get(context).joinRoom(room.text);
                               // if (OnlineCubit.get(context).allcase!['wating']) {
                               //   navigatAndFinish(context: context, page: Online());
