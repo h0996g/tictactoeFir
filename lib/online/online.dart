@@ -141,104 +141,18 @@ class Online extends StatelessWidget {
                                         OnlineCubit.get(context)
                                             .playGame(index);
                                       }
-
-                                      // if (OnlineCubit.get(context)
-                                      //             .allcase!['win'] ==
-                                      //         'P1' ||
-                                      //     OnlineCubit.get(context)
-                                      //             .allcase!['win'] ==
-                                      //         'P2' ||
-                                      //     OnlineCubit.get(context)
-                                      //             .allcase!['win'] ==
-                                      //         'tied') {
-                                      //   showDialog(
-                                      //       context: context,
-                                      //       builder: (context) {
-                                      //         return AlertDialog(
-                                      //           content: Text(
-                                      //             OnlineCubit.get(context)
-                                      //                         .allcase!['win'] ==
-                                      //                     'P1'
-                                      //                 ? 'Player one won'
-                                      //                 : OnlineCubit.get(context)
-                                      //                                 .allcase![
-                                      //                             'win'] ==
-                                      //                         'P2'
-                                      //                     ? 'player two won'
-                                      //                     : OnlineCubit.get(context)
-                                      //                                     .allcase![
-                                      //                                 'win'] ==
-                                      //                             'tied'
-                                      //                         ? 'DRAW'
-                                      //                         : '',
-                                      //             style: TextStyle(
-                                      //                 color: OnlineCubit.get(context)
-                                      //                                     .allcase![
-                                      //                                 'win'] ==
-                                      //                             'p2' &&
-                                      //                         !OnlineCubit.get(
-                                      //                                 context)
-                                      //                             .twopl
-                                      //                     ? Colors.blue
-                                      //                     : OnlineCubit.get(context)
-                                      //                                     .allcase![
-                                      //                                 'win'] ==
-                                      //                             'tied'
-                                      //                         ? Colors.brown
-                                      //                         : OnlineCubit.get(
-                                      //                                 context)
-                                      //                             .xomessage,
-                                      //                 fontSize: 30,
-                                      //                 fontWeight: FontWeight.w600),
-                                      //           ),
-                                      //           actions: [
-                                      //             TextButton(
-                                      //               child: const Text(
-                                      //                 'Play Again!',
-                                      //                 style: TextStyle(
-                                      //                     fontSize: 20,
-                                      //                     color: Colors.teal,
-                                      //                     fontWeight:
-                                      //                         FontWeight.bold),
-                                      //               ),
-                                      //               onPressed: () {
-                                      //                 OnlineCubit.get(context)
-                                      //                         .xcountsave =
-                                      //                     OnlineCubit.get(context)
-                                      //                         .xcount;
-                                      //                 OnlineCubit.get(context)
-                                      //                         .ocountsave =
-                                      //                     OnlineCubit.get(context)
-                                      //                         .ocount;
-                                      //                 OnlineCubit.get(context)
-                                      //                     .reset();
-                                      //                 OnlineCubit.get(context)
-                                      //                         .xcount =
-                                      //                     OnlineCubit.get(context)
-                                      //                         .xcountsave;
-                                      //                 OnlineCubit.get(context)
-                                      //                         .ocount =
-                                      //                     OnlineCubit.get(context)
-                                      //                         .ocountsave;
-                                      //                 Navigator.pop(context);
-                                      //               },
-                                      //             )
-                                      //           ],
-                                      //         );
-                                      //       });
-                                      // }
                                     },
                                   );
                                 },
                               ),
                             ),
-                            CustomPaint(
-                              foregroundPainter: LinePainter(
-                                  OnlineCubit.get(context).l,
-                                  OnlineCubit.get(context).r,
-                                  OnlineCubit.get(context).t,
-                                  OnlineCubit.get(context).b),
-                            ),
+                            // CustomPaint(
+                            //   foregroundPainter: LinePainter(
+                            //       OnlineCubit.get(context).l,
+                            //       OnlineCubit.get(context).r,
+                            //       OnlineCubit.get(context).t,
+                            //       OnlineCubit.get(context).b),
+                            // ),
                           ],
                         ),
                       ),
@@ -248,7 +162,6 @@ class Online extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Button3d(
-                              // margin: const EdgeInsets.symmetric(horizontal: 80),
                               text: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -304,18 +217,6 @@ class Online extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            // Button3d(
-                            //     text: const Text(
-                            //       'New Game',
-                            //       style: TextStyle(
-                            //           fontSize: 30, fontWeight: FontWeight.bold),
-                            //     ),
-                            //     onTap: () {
-                            //       //bah yb9a score..
-
-                            //       OnlineCubit.get(context).reset();
-                            //     }),
-
                             Button3d(
                               text: const Text(
                                 "End Game",
@@ -343,25 +244,25 @@ class Online extends StatelessWidget {
   }
 }
 
-class LinePainter extends CustomPainter {
-  late double l;
-  late double r;
-  late double b;
-  late double t;
-  LinePainter(this.l, this.r, this.b, this.t);
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.green
-      ..strokeCap = StrokeCap.round
-      ..strokeWidth = 10;
-    canvas.drawLine(
-      Offset(size.width * l, size.height * t),
-      Offset(size.width * r, size.height * b),
-      paint,
-    );
-  }
+// class LinePainter extends CustomPainter {
+//   late double l;
+//   late double r;
+//   late double b;
+//   late double t;
+//   LinePainter(this.l, this.r, this.b, this.t);
+//   @override
+//   void paint(Canvas canvas, Size size) {
+//     final paint = Paint()
+//       ..color = Colors.green
+//       ..strokeCap = StrokeCap.round
+//       ..strokeWidth = 10;
+//     canvas.drawLine(
+//       Offset(size.width * l, size.height * t),
+//       Offset(size.width * r, size.height * b),
+//       paint,
+//     );
+//   }
 
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
-}
+//   @override
+//   bool shouldRepaint(CustomPainter oldDelegate) => false;
+// }

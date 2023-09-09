@@ -17,7 +17,7 @@ class LogicCubit extends Cubit<LogicState> {
   late int xcountsave;
   late int ocountsave;
   Color xomessage = Colors.red;
-  double l = 0, r = 0, t = 0, b = 0;
+  // double l = 0, r = 0, t = 0, b = 0;
 
   //pop//
   //test//
@@ -49,10 +49,10 @@ class LogicCubit extends Cubit<LogicState> {
       listButton[i].str = '';
       listButton[i].enabled = true;
       listButton[i].clr = Colors.grey[300];
-      l = 0;
-      r = 0;
-      t = 0;
-      b = 0;
+      // l = 0;
+      // r = 0;
+      // t = 0;
+      // b = 0;
 
       // listButton[a].clr2 = Colors.transparent;
     }
@@ -88,66 +88,66 @@ class LogicCubit extends Cubit<LogicState> {
 
   void checkWinner(var player) {
     if (player.contains(0) && player.contains(1) && player.contains(2)) {
-      l = 0.1;
-      r = 0.9;
-      t = 0.15;
-      b = 0.15;
+      // l = 0.1;
+      // r = 0.9;
+      // t = 0.15;
+      // b = 0.15;
       iswinner = true;
       emit(IsWinnerState());
     }
     if (player.contains(3) && player.contains(4) && player.contains(5)) {
-      l = 0.1;
-      r = 0.9;
-      t = 0.44;
-      b = 0.44;
+      // l = 0.1;
+      // r = 0.9;
+      // t = 0.44;
+      // b = 0.44;
       iswinner = true;
       emit(IsWinnerState());
     }
     if (player.contains(6) && player.contains(7) && player.contains(8)) {
-      l = 0.1;
-      r = 0.9;
-      t = 0.72;
-      b = 0.72;
+      // l = 0.1;
+      // r = 0.9;
+      // t = 0.72;
+      // b = 0.72;
       iswinner = true;
       emit(IsWinnerState());
     }
     if (player.contains(0) && player.contains(3) && player.contains(6)) {
-      l = 0.174;
-      r = 0.174;
-      t = 0.089;
-      b = 0.79;
+      // l = 0.174;
+      // r = 0.174;
+      // t = 0.089;
+      // b = 0.79;
       iswinner = true;
       emit(IsWinnerState());
     }
     if (player.contains(1) && player.contains(4) && player.contains(7)) {
-      l = 1 / 2;
-      r = 1 / 2;
-      t = 0.089;
-      b = 0.79;
+      // l = 1 / 2;
+      // r = 1 / 2;
+      // t = 0.089;
+      // b = 0.79;
       iswinner = true;
       emit(IsWinnerState());
     }
     if (player.contains(2) && player.contains(5) && player.contains(8)) {
-      l = 0.83;
-      r = 0.83;
-      t = 0.089;
-      b = 0.79;
+      // l = 0.83;
+      // r = 0.83;
+      // t = 0.089;
+      // b = 0.79;
       iswinner = true;
       emit(IsWinnerState());
     }
     if (player.contains(0) && player.contains(4) && player.contains(8)) {
-      l = 0.9;
-      r = 0.1;
-      t = 0.08;
-      b = 0.8;
+      // l = 0.9;
+      // r = 0.1;
+      // t = 0.08;
+      // b = 0.8;
       iswinner = true;
       emit(IsWinnerState());
     }
     if (player.contains(2) && player.contains(4) && player.contains(6)) {
-      l = 0.9;
-      r = 0.1;
-      t = 0.8;
-      b = 0.08;
+      // l = 0.9;
+      // r = 0.1;
+      // t = 0.8;
+      // b = 0.08;
       iswinner = true;
       emit(IsWinnerState());
     }

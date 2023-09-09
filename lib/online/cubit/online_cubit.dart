@@ -90,7 +90,7 @@ class OnlineCubit extends Cubit<OnlineState> {
   // bool twopl = true;
 
   // Color xomessage = Colors.red;
-  double l = 0, r = 0, t = 0, b = 0;
+  // double l = 0, r = 0, t = 0, b = 0;
 
   Random random = Random();
   bool xTurn = true;
@@ -112,10 +112,10 @@ class OnlineCubit extends Cubit<OnlineState> {
       listButton[i].str = '';
       listButton[i].enabled = true;
       listButton[i].clr = Colors.grey[300];
-      l = 0;
-      r = 0;
-      t = 0;
-      b = 0;
+      // l = 0;
+      // r = 0;
+      // t = 0;
+      // b = 0;
     }
     iswinner = false;
     isnull = false;
@@ -147,10 +147,10 @@ class OnlineCubit extends Cubit<OnlineState> {
       listButton[i].str = '';
       listButton[i].enabled = true;
       listButton[i].clr = Colors.grey[300];
-      l = 0;
-      r = 0;
-      t = 0;
-      b = 0;
+      // l = 0;
+      // r = 0;
+      // t = 0;
+      // b = 0;
     }
     iswinner = false;
     isnull = false;
@@ -174,10 +174,10 @@ class OnlineCubit extends Cubit<OnlineState> {
     if (allcase!['0'] == player &&
         allcase!['1'] == player &&
         allcase!['2'] == player) {
-      l = 0.1;
-      r = 0.9;
-      t = 0.15;
-      b = 0.15;
+      // l = 0.1;
+      // r = 0.9;
+      // t = 0.15;
+      // b = 0.15;
       iswinner = true;
       // emit(IsWinnerState());
       // return;
@@ -185,10 +185,10 @@ class OnlineCubit extends Cubit<OnlineState> {
     if (allcase!['3'] == player &&
         allcase!['4'] == player &&
         allcase!['5'] == player) {
-      l = 0.1;
-      r = 0.9;
-      t = 0.44;
-      b = 0.44;
+      // l = 0.1;
+      // r = 0.9;
+      // t = 0.44;
+      // b = 0.44;
       iswinner = true;
       // emit(IsWinnerState());
       // return;
@@ -196,10 +196,10 @@ class OnlineCubit extends Cubit<OnlineState> {
     if (allcase!['6'] == player &&
         allcase!['7'] == player &&
         allcase!['8'] == player) {
-      l = 0.1;
-      r = 0.9;
-      t = 0.72;
-      b = 0.72;
+      // l = 0.1;
+      // r = 0.9;
+      // t = 0.72;
+      // b = 0.72;
       iswinner = true;
       // emit(IsWinnerState());
       // return;
@@ -207,10 +207,10 @@ class OnlineCubit extends Cubit<OnlineState> {
     if (allcase!['0'] == player &&
         allcase!['3'] == player &&
         allcase!['6'] == player) {
-      l = 0.174;
-      r = 0.174;
-      t = 0.089;
-      b = 0.79;
+      // l = 0.174;
+      // r = 0.174;
+      // t = 0.089;
+      // b = 0.79;
       iswinner = true;
       // emit(IsWinnerState());
       // return;
@@ -218,10 +218,10 @@ class OnlineCubit extends Cubit<OnlineState> {
     if (allcase!['1'] == player &&
         allcase!['4'] == player &&
         allcase!['7'] == player) {
-      l = 1 / 2;
-      r = 1 / 2;
-      t = 0.089;
-      b = 0.79;
+      // l = 1 / 2;
+      // r = 1 / 2;
+      // t = 0.089;
+      // b = 0.79;
       iswinner = true;
       // emit(IsWinnerState());
       // return;
@@ -229,10 +229,10 @@ class OnlineCubit extends Cubit<OnlineState> {
     if (allcase!['2'] == player &&
         allcase!['5'] == player &&
         allcase!['8'] == player) {
-      l = 0.83;
-      r = 0.83;
-      t = 0.089;
-      b = 0.79;
+      // l = 0.83;
+      // r = 0.83;
+      // t = 0.089;
+      // b = 0.79;
       iswinner = true;
       // emit(IsWinnerState());
       // return;
@@ -240,10 +240,10 @@ class OnlineCubit extends Cubit<OnlineState> {
     if (allcase!['0'] == player &&
         allcase!['4'] == player &&
         allcase!['8'] == player) {
-      l = 0.9;
-      r = 0.1;
-      t = 0.08;
-      b = 0.8;
+      // l = 0.9;
+      // r = 0.1;
+      // t = 0.08;
+      // b = 0.8;
       iswinner = true;
       // emit(IsWinnerState());
       // return;
@@ -251,10 +251,10 @@ class OnlineCubit extends Cubit<OnlineState> {
     if (allcase!['2'] == player &&
         allcase!['4'] == player &&
         allcase!['6'] == player) {
-      l = 0.9;
-      r = 0.1;
-      t = 0.8;
-      b = 0.08;
+      // l = 0.9;
+      // r = 0.1;
+      // t = 0.8;
+      // b = 0.08;
       iswinner = true;
       // emit(IsWinnerState());
       // return;

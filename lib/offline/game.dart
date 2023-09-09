@@ -164,13 +164,13 @@ class Offline extends StatelessWidget {
                             },
                           ),
                         ),
-                        CustomPaint(
-                          foregroundPainter: LinePainter(
-                              LogicCubit.get(context).l,
-                              LogicCubit.get(context).r,
-                              LogicCubit.get(context).t,
-                              LogicCubit.get(context).b),
-                        ),
+                        // CustomPaint(
+                        //   foregroundPainter: LinePainter(
+                        //       LogicCubit.get(context).l,
+                        //       LogicCubit.get(context).r,
+                        //       LogicCubit.get(context).t,
+                        //       LogicCubit.get(context).b),
+                        // ),
                       ],
                     ),
                   ),
@@ -270,25 +270,25 @@ class Offline extends StatelessWidget {
   }
 }
 
-class LinePainter extends CustomPainter {
-  late double l;
-  late double r;
-  late double b;
-  late double t;
-  LinePainter(this.l, this.r, this.b, this.t);
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.green
-      ..strokeCap = StrokeCap.round
-      ..strokeWidth = 10;
-    canvas.drawLine(
-      Offset(size.width * l, size.height * t),
-      Offset(size.width * r, size.height * b),
-      paint,
-    );
-  }
+// class LinePainter extends CustomPainter {
+//   late double l;
+//   late double r;
+//   late double b;
+//   late double t;
+//   LinePainter(this.l, this.r, this.b, this.t);
+//   @override
+//   void paint(Canvas canvas, Size size) {
+//     final paint = Paint()
+//       ..color = Colors.green
+//       ..strokeCap = StrokeCap.round
+//       ..strokeWidth = 10;
+//     canvas.drawLine(
+//       Offset(size.width * l, size.height * t),
+//       Offset(size.width * r, size.height * b),
+//       paint,
+//     );
+//   }
 
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
-}
+//   @override
+//   bool shouldRepaint(CustomPainter oldDelegate) => false;
+// }
