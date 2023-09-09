@@ -23,51 +23,57 @@ class Online extends StatelessWidget {
                       OnlineCubit.get(context).allcase!['win'] == 'P2' ||
                       OnlineCubit.get(context).allcase!['win'] == 'tied') {
                     showDialog(
+                        // useRootNavigator: false,
+                        barrierDismissible: false,
                         context: context,
                         builder: (context) {
-                          return AlertDialog(
-                            content: Text(
-                              OnlineCubit.get(context).allcase!['win'] == 'P1'
-                                  ? 'Player one won'
-                                  : OnlineCubit.get(context).allcase!['win'] ==
-                                          'P2'
-                                      ? 'player two won'
-                                      : OnlineCubit.get(context)
-                                                  .allcase!['win'] ==
-                                              'tied'
-                                          ? 'DRAW'
-                                          : '',
-                              style: TextStyle(
-                                  color: OnlineCubit.get(context)
-                                              .allcase!['win'] ==
-                                          'P2'
-                                      // &&
-                                      // !OnlineCubit.get(context).twopl
-                                      ? Colors.blue
-                                      : OnlineCubit.get(context)
-                                                  .allcase!['win'] ==
-                                              'tied'
-                                          ? Colors.brown
-                                          : Colors.red,
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            actions: [
-                              TextButton(
-                                child: const Text(
-                                  'Play Again!',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.teal,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                onPressed: () {
-                                  OnlineCubit.get(context).playAgainReset();
+                          return WillPopScope(
+                            onWillPop: () async => false,
+                            child: AlertDialog(
+                              content: Text(
+                                OnlineCubit.get(context).allcase!['win'] == 'P1'
+                                    ? 'Player one won'
+                                    : OnlineCubit.get(context)
+                                                .allcase!['win'] ==
+                                            'P2'
+                                        ? 'player two won'
+                                        : OnlineCubit.get(context)
+                                                    .allcase!['win'] ==
+                                                'tied'
+                                            ? 'DRAW'
+                                            : '',
+                                style: TextStyle(
+                                    color: OnlineCubit.get(context)
+                                                .allcase!['win'] ==
+                                            'P2'
+                                        // &&
+                                        // !OnlineCubit.get(context).twopl
+                                        ? Colors.blue
+                                        : OnlineCubit.get(context)
+                                                    .allcase!['win'] ==
+                                                'tied'
+                                            ? Colors.brown
+                                            : Colors.red,
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              actions: [
+                                TextButton(
+                                  child: const Text(
+                                    'Play Again!',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.teal,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  onPressed: () {
+                                    OnlineCubit.get(context).playAgainReset();
 
-                                  Navigator.pop(context);
-                                },
-                              )
-                            ],
+                                    Navigator.pop(context);
+                                  },
+                                )
+                              ],
+                            ),
                           );
                         });
                   }

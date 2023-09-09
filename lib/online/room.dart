@@ -17,9 +17,7 @@ class Room extends StatelessWidget {
     // OnlineCubit.get(context)
     //     .lisnerStartGame(OnlineCubit.get(context).id.toString());
     return BlocConsumer<OnlineCubit, OnlineState>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         return SafeArea(
           child: ConditionalBuilder(
@@ -103,22 +101,11 @@ class Room extends StatelessWidget {
                             onTap: () {
                               FocusManager.instance.primaryFocus?.unfocus();
                               OnlineCubit.get(context).joinRoom(room.text);
-                              // if (OnlineCubit.get(context).allcase!['wating']) {
-                              //   navigatAndFinish(context: context, page: Online());
-                              // } else {
-                              //   null;
-                              // }
                             },
                           ),
                           const SizedBox(
                             height: 30,
                           ),
-                          // MaterialButton(
-                          //   onPressed: () {
-                          //     OnlineCubit.get(context).testUpdat();
-                          //   },
-                          //   child: const Text("test"),
-                          // )
                         ],
                       ),
                     )),
