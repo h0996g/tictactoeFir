@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tictactoefir/about.dart';
 import 'package:tictactoefir/offline/cubit/logic_cubit.dart';
@@ -20,7 +21,6 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -35,9 +35,20 @@ class MyApp extends StatelessWidget {
           // ..getRandom(),
         ),
       ],
-      child: const MaterialApp(
+      child: MaterialApp(
         title: 'Flutter Demo',
         home: About(),
+        // theme: ThemeData(
+        //   appBarTheme: const AppBarTheme(
+        //     systemOverlayStyle: SystemUiOverlayStyle(
+        //         statusBarColor: Colors.transparent,
+        //         statusBarBrightness: Brightness.light,
+        //         statusBarIconBrightness: Brightness.dark),
+        //     // color: Colors.white,
+        //     elevation: 0,
+        //     // iconTheme: IconThemeData(color: Colors.black),
+        //   ),
+        // ),
       ),
     );
   }

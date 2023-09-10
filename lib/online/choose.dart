@@ -9,6 +9,7 @@ class Choose extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     Button3d b1 = Button3d(
       onTap: () {
         navigatAndReturn(context: context, page: const CreeRoom());
@@ -28,20 +29,28 @@ class Choose extends StatelessWidget {
       ),
     );
     return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: Column(
-            // mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(
-                height: 150,
-              ),
-              b1,
-              const SizedBox(
-                height: 80,
-              ),
-              b2
-            ]),
+      // appBar: AppBar(),
+      body: Container(
+        width: double.infinity,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/img/tiic.jpg'), fit: BoxFit.cover),
+        ),
+        child: Center(
+          child: Column(
+
+              // mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: size.height / 3,
+                ),
+                b1,
+                const SizedBox(
+                  height: 80,
+                ),
+                b2
+              ]),
+        ),
       ),
     );
   }

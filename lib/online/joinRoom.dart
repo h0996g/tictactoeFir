@@ -23,7 +23,6 @@ class _JoinRoomState extends State<JoinRoom> {
     // TODO: implement initState
     // room.dispose();
 
-    print('gg');
     super.initState();
   }
 
@@ -55,57 +54,55 @@ class _JoinRoomState extends State<JoinRoom> {
     return BlocConsumer<OnlineCubit, OnlineState>(
       listener: (context, state) {},
       builder: (context, state) {
-        return SafeArea(
-          child: ConditionalBuilder(
-            builder: (BuildContext context) {
-              return Online();
-            },
-            condition: OnlineCubit.get(context).isStart == true,
-            fallback: (BuildContext context) {
-              return Scaffold(
-                appBar: AppBar(
-                  leading: MaterialButton(
-                    child: const Icon(
-                      Icons.arrow_back,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      // OnlineCubit.get(context).endGameReset();
-                      // OnlineCubit.get(context).id = null;
-                      Navigator.pop(context);
-                    },
+        return ConditionalBuilder(
+          builder: (BuildContext context) {
+            return Online();
+          },
+          condition: OnlineCubit.get(context).isStart == true,
+          fallback: (BuildContext context) {
+            return Scaffold(
+              appBar: AppBar(
+                leading: MaterialButton(
+                  child: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
                   ),
+                  onPressed: () {
+                    // OnlineCubit.get(context).endGameReset();
+                    // OnlineCubit.get(context).id = null;
+                    Navigator.pop(context);
+                  },
                 ),
-                body: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Center(
-                      child: Column(
-                        children: [
-                          b1,
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          defaultForm(
-                              controller: room,
-                              type: TextInputType.number,
-                              textInputAction: TextInputAction.done,
-                              label: 'Room',
-                              prefixIcon: const Icon(Icons.home),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return "Room Must Be Not Empty";
-                                }
-                              }),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          b2
-                        ],
-                      ),
-                    )),
-              );
-            },
-          ),
+              ),
+              body: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Center(
+                    child: Column(
+                      children: [
+                        b1,
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        defaultForm(
+                            controller: room,
+                            type: TextInputType.number,
+                            textInputAction: TextInputAction.done,
+                            label: 'Room',
+                            prefixIcon: const Icon(Icons.home),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Room Must Be Not Empty";
+                              }
+                            }),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        b2
+                      ],
+                    ),
+                  )),
+            );
+          },
         );
       },
     );

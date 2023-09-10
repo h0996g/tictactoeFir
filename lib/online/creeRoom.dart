@@ -21,7 +21,6 @@ class _CreeRoomState extends State<CreeRoom> {
     OnlineCubit.get(context).getRandom();
     OnlineCubit.get(context).creeRoom();
 
-    print('gg');
     super.initState();
   }
 
@@ -46,57 +45,55 @@ class _CreeRoomState extends State<CreeRoom> {
     return BlocConsumer<OnlineCubit, OnlineState>(
       listener: (context, state) {},
       builder: (context, state) {
-        return SafeArea(
-          child: ConditionalBuilder(
-            builder: (BuildContext context) {
-              return Online();
-            },
-            condition: OnlineCubit.get(context).isStart == true,
-            fallback: (BuildContext context) {
-              return Scaffold(
-                appBar: AppBar(
-                  leading: MaterialButton(
-                    child: const Icon(
-                      Icons.arrow_back,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      OnlineCubit.get(context).endGameReset();
-                      // OnlineCubit.get(context).id = null;
-                      Navigator.pop(context);
-                    },
+        return ConditionalBuilder(
+          builder: (BuildContext context) {
+            return Online();
+          },
+          condition: OnlineCubit.get(context).isStart == true,
+          fallback: (BuildContext context) {
+            return Scaffold(
+              appBar: AppBar(
+                leading: MaterialButton(
+                  child: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    OnlineCubit.get(context).endGameReset();
+                    // OnlineCubit.get(context).id = null;
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+              body: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Center(
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      b1,
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        '${OnlineCubit.get(context).id}',
+                        style: const TextStyle(
+                          fontSize: 30,
+                          letterSpacing: 6,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      b2
+                    ],
                   ),
                 ),
-                body: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Center(
-                    child: Column(
-                      children: [
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        b1,
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          '${OnlineCubit.get(context).id}',
-                          style: const TextStyle(
-                            fontSize: 30,
-                            letterSpacing: 6,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        b2
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
+              ),
+            );
+          },
         );
       },
     );
