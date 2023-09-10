@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tictactoefir/online/chose.dart';
 import 'package:tictactoefir/online/room.dart';
 import 'package:tictactoefir/shared/button.dart';
 import 'package:tictactoefir/online/cubit/online_cubit.dart';
@@ -79,12 +80,6 @@ class Online extends StatelessWidget {
                   }
                 }
 
-                if (state is GodByState) {
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => Room()),
-                      (route) => false);
-                }
                 // TODO: implement listener
               },
               builder: (context, state) {
@@ -115,7 +110,7 @@ class Online extends StatelessWidget {
                             NotificationListener<
                                 OverscrollIndicatorNotification>(
                               onNotification: (overScroll) {
-                                overScroll.disallowGlow();
+                                overScroll.disallowIndicator();
                                 return true;
                               },
                               child: GridView.builder(
@@ -168,6 +163,7 @@ class Online extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Button3d(
+                              onTap: () {},
                               text: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -243,7 +239,7 @@ class Online extends StatelessWidget {
         },
         condition: OnlineCubit.get(context).isStart == true,
         fallback: (BuildContext context) {
-          return Scaffold();
+          return const Scaffold();
         },
       ),
     );

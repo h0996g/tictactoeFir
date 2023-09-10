@@ -55,6 +55,20 @@ class OnlineCubit extends Cubit<OnlineState> {
     });
   }
 
+  Future<void> changeRoomId() async {
+    await FirebaseFirestore.instance
+        .collection('Room')
+        .doc(id.toString())
+        .delete()
+        .then((value) async {
+      getRandom();
+      await creeRoom();
+      emit(ChangeRoomIdGoodState());
+    }).catchError((e) {
+      emit(ChangeRoomIdBadState());
+    });
+  }
+
   Map<String, dynamic>? allcase = {};
   bool isStart = false;
   // var a;
@@ -143,6 +157,9 @@ class OnlineCubit extends Cubit<OnlineState> {
   }
 
   Future<void> endGameReset() async {
+    // int? idend = id;
+    // id = ;
+
     for (int i = 0; i < 9; i++) {
       listButton[i].str = '';
       listButton[i].enabled = true;
@@ -159,6 +176,7 @@ class OnlineCubit extends Cubit<OnlineState> {
     // a.cancel();
     // isStart = false;
     // int? idTemp=id;
+
     await FirebaseFirestore.instance
         .collection('Room')
         .doc(id.toString())

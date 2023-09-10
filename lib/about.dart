@@ -1,14 +1,8 @@
-import 'dart:math';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:tictactoefir/online/chose.dart';
 import 'package:tictactoefir/shared/button.dart';
-import 'package:tictactoefir/online/online.dart';
 import 'package:tictactoefir/shared/components/components.dart';
 import 'package:tictactoefir/offline/game.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-
-import 'online/room.dart';
 
 class About extends StatelessWidget {
   const About({Key? key}) : super(key: key);
@@ -31,7 +25,9 @@ class About extends StatelessWidget {
         ));
     Button3d b2 = Button3d(
         onTap: () {
-          navigatAndReturn(context: context, page: Room());
+          navigatAndReturn(context: context, page: const Choose()
+              // Room(),
+              );
         },
         text: const Text(
           'Online',

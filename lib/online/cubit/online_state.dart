@@ -43,3 +43,7 @@ class MState extends OnlineState {}
 class IswaitinFalseGoodState extends OnlineState {}
 
 class IswaitinFalseBadState extends OnlineState {}
+
+class ChangeRoomIdGoodState extends OnlineState {}
+
+class ChangeRoomIdBadState extends OnlineState {}

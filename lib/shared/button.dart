@@ -30,7 +30,12 @@ class _Button3dState extends State<Button3d> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          _iselevated = !_iselevated;
+          _iselevated = false;
+        });
+        Future.delayed(const Duration(milliseconds: 200), () {
+          setState(() {
+            _iselevated = true;
+          });
         });
         widget.onTap!();
       },
