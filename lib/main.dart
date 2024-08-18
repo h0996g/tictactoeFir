@@ -36,19 +36,20 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        home: About(),
-        // theme: ThemeData(
-        //   appBarTheme: const AppBarTheme(
-        //     systemOverlayStyle: SystemUiOverlayStyle(
-        //         statusBarColor: Colors.transparent,
-        //         statusBarBrightness: Brightness.light,
-        //         statusBarIconBrightness: Brightness.dark),
-        //     // color: Colors.white,
-        //     elevation: 0,
-        //     // iconTheme: IconThemeData(color: Colors.black),
-        //   ),
-        // ),
+        home: const About(),
+        theme: ThemeData(
+          appBarTheme: const AppBarTheme(
+            systemOverlayStyle: SystemUiOverlayStyle(
+                statusBarColor: Colors.transparent,
+                statusBarBrightness: Brightness.dark,
+                statusBarIconBrightness: Brightness.light),
+            // color: Colors.white,
+            elevation: 0,
+            // iconTheme: IconThemeData(color: Colors.black),
+          ),
+        ),
       ),
     );
   }
