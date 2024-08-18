@@ -86,7 +86,7 @@ class OnlineCubit extends Cubit<OnlineState> {
         listButton[i].clr = (allcase!['$i'] == 'X'
             ? Colors.red
             : allcase!['$i'] == 'O'
-                ? Colors.green
+                ? Colors.blue
                 : Colors.grey[300]);
       }
 
@@ -301,7 +301,7 @@ class OnlineCubit extends Cubit<OnlineState> {
       print('kfh Dkhol');
       for (int i = 0; i < 9; i++) {
         listButton[i].enabled = false;
-        listButton[i].clr = Colors.green;
+        listButton[i].clr = Colors.blue;
       }
       //kima yrb7 p1 yb9a mktob dalet x
       // !
