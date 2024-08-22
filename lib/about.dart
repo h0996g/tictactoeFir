@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tictactoefir/online/choose.dart';
-import 'package:tictactoefir/shared/button.dart';
 import 'package:tictactoefir/shared/components/components.dart';
 import 'package:tictactoefir/offline/game.dart';
 
@@ -9,56 +8,59 @@ class About extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Size size = MediaQuery.of(context).size;
-
-    Button3d b1 = Button3d(
-        onTap: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Offline()));
-        },
-        color1: Colors.yellow[300],
-        color2: Colors.yellow,
-        color3: Colors.amber,
-        text: const Text(
-          'Start Game',
-          style: TextStyle(fontSize: 50),
-        ));
-    Button3d b2 = Button3d(
-        onTap: () {
-          navigatAndReturn(context: context, page: const Choose()
-              // Room(),
-              );
-        },
-        text: const Text(
-          'Online',
-          style: TextStyle(fontSize: 50),
-        ));
-    Button3d b3 = Button3d(
-        onTap: () => null,
-        text: const Text(
-          'About Us',
-          style: TextStyle(fontSize: 50),
-        ));
     return Scaffold(
       body: Container(
         width: double.infinity,
         decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('assets/img/tiic.jpg'), fit: BoxFit.cover),
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364)],
+          ),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            b1,
-            const SizedBox(
-              height: 50,
-            ),
-            b2,
-            const SizedBox(
-              height: 50,
-            ),
-            b3
-          ],
+        child: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Tic Tac Toe',
+                style: TextStyle(
+                  fontSize: 48,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  shadows: [
+                    Shadow(
+                      blurRadius: 10.0,
+                      color: Colors.black54,
+                      offset: Offset(2.0, 2.0),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 50),
+              Button3D(
+                text: 'Start Game',
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Offline()),
+                ),
+                color: Colors.teal[400]!,
+              ),
+              const SizedBox(height: 20),
+              Button3D(
+                text: 'Online',
+                onPressed: () =>
+                    navigatAndReturn(context: context, page: const Choose()),
+                color: Colors.teal[700]!,
+              ),
+              const SizedBox(height: 20),
+              Button3D(
+                text: 'About Us',
+                onPressed: () {},
+                color: Colors.teal[900]!,
+              ),
+            ],
+          ),
         ),
       ),
     );

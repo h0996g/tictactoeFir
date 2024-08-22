@@ -2,9 +2,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tictactoefir/online/online.dart';
-import 'package:tictactoefir/shared/button.dart';
-
-import '../shared/components/components.dart';
+import 'package:tictactoefir/shared/components/components.dart';
 import 'cubit/online_cubit.dart';
 import 'cubit/online_state.dart';
 
@@ -19,38 +17,13 @@ class _JoinRoomState extends State<JoinRoom> {
   TextEditingController room = TextEditingController();
 
   @override
-  void initState() {
-    // TODO: implement initState
-    // room.dispose();
-
-    super.initState();
-  }
-
-  @override
   void dispose() {
-    // TODO: implement dispose
     room.dispose();
     super.dispose();
   }
 
+  @override
   Widget build(BuildContext context) {
-    Button3d b1 = Button3d(
-      onTap: () {},
-      text: const Text(
-        'Room Code To Join :',
-        style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-      ),
-    );
-    Button3d b2 = Button3d(
-      text: const Text(
-        'Donne',
-        style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-      ),
-      onTap: () {
-        FocusManager.instance.primaryFocus?.unfocus();
-        OnlineCubit.get(context).joinRoom(room.text);
-      },
-    );
     return BlocConsumer<OnlineCubit, OnlineState>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -62,45 +35,81 @@ class _JoinRoomState extends State<JoinRoom> {
           fallback: (BuildContext context) {
             return Scaffold(
               appBar: AppBar(
-                leading: MaterialButton(
-                  child: const Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                  ),
+                title: const Text('Join Room',
+                    style: TextStyle(color: Colors.white)),
+                backgroundColor: Colors.teal[400],
+                elevation: 0,
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
                   onPressed: () {
-                    // OnlineCubit.get(context).endGameReset();
-                    // OnlineCubit.get(context).id = null;
                     Navigator.pop(context);
                   },
                 ),
               ),
-              body: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Center(
-                    child: Column(
-                      children: [
-                        b1,
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        defaultForm(
+              body: Container(
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0xFF0F2027),
+                      Color(0xFF203A43),
+                      Color(0xFF2C5364)
+                    ],
+                  ),
+                ),
+                child: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'Enter Room Code',
+                            style: TextStyle(
+                              fontSize: 36,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 10.0,
+                                  color: Colors.black54,
+                                  offset: Offset(2.0, 2.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 40),
+                          defaultForm(
                             controller: room,
                             type: TextInputType.number,
                             textInputAction: TextInputAction.done,
-                            label: 'Room',
-                            prefixIcon: const Icon(Icons.home),
+                            label: 'Room Code',
+                            labelStyle: const TextStyle(color: Colors.white),
+                            prefixIcon:
+                                const Icon(Icons.vpn_key, color: Colors.white),
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return "Room Must Be Not Empty";
+                                return "Room Code must not be empty";
                               }
-                            }),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        b2
-                      ],
+                            },
+                          ),
+                          const SizedBox(height: 20),
+                          Button3D(
+                            text: 'Join Room',
+                            onPressed: () {
+                              FocusManager.instance.primaryFocus?.unfocus();
+                              OnlineCubit.get(context).joinRoom(room.text);
+                            },
+                            color: Colors.teal[600]!,
+                          ),
+                        ],
+                      ),
                     ),
-                  )),
+                  ),
+                ),
+              ),
             );
           },
         );
