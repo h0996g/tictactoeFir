@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:tictactoefir/online/choose.dart';
 import 'package:tictactoefir/shared/components/components.dart';
 import 'package:tictactoefir/offline/game.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class About extends StatelessWidget {
   const About({Key? key}) : super(key: key);
@@ -56,7 +58,12 @@ class About extends StatelessWidget {
               const SizedBox(height: 20),
               Button3D(
                 text: 'About Us',
-                onPressed: () {},
+                onPressed: () async {
+                  Uri url = Uri.parse('https://houssameddine.netlify.app/');
+                  if (!await launchUrl(url)) {
+                    throw Exception('Could not launch $url');
+                  }
+                },
                 color: Colors.teal[900]!,
               ),
             ],

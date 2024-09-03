@@ -17,9 +17,9 @@ class CreeRoom extends StatefulWidget {
 class _CreeRoomState extends State<CreeRoom> {
   @override
   void initState() {
-    super.initState();
     OnlineCubit.get(context).getRandom();
     OnlineCubit.get(context).creeRoom();
+    super.initState();
   }
 
   @override
@@ -28,7 +28,7 @@ class _CreeRoomState extends State<CreeRoom> {
       listener: (context, state) {},
       builder: (context, state) {
         return ConditionalBuilder(
-          builder: (BuildContext context) => Online(),
+          builder: (BuildContext context) => const Online(),
           condition: OnlineCubit.get(context).isStart == true,
           fallback: (BuildContext context) => _buildWaitingRoom(context),
         );
@@ -37,6 +37,7 @@ class _CreeRoomState extends State<CreeRoom> {
   }
 
   Widget _buildWaitingRoom(BuildContext context) {
+    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
         await FirebaseFirestore.instance
@@ -63,8 +64,8 @@ class _CreeRoomState extends State<CreeRoom> {
           ),
         ),
         body: Container(
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364)],

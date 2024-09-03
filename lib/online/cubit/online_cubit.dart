@@ -317,7 +317,8 @@ class OnlineCubit extends Cubit<OnlineState> {
       emit(P2WinState());
       return;
     }
-    emit(IsWinnerState());
+    // emit(IsWinnerState());
+    print('IsWinnerState()');
     return;
   }
 
@@ -353,7 +354,7 @@ class OnlineCubit extends Cubit<OnlineState> {
           .doc(id.toString())
           .update({'turn': !allcase!['turn']});
 
-      emit(P1PlayState());
+      // emit(P1PlayState());
     }
     await checkWinner('X');
     if (!iswinner) {
