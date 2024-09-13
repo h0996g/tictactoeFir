@@ -294,53 +294,71 @@ class Online extends StatelessWidget {
           final double dialogWidth = MediaQuery.of(context).size.width;
           return WillPopScope(
             onWillPop: () async => false,
-            child: AlertDialog(
-              backgroundColor: Colors.white.withOpacity(0.9),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(dialogWidth * 0.05),
-              ),
-              title: Text(
-                'Game Over',
-                style: GoogleFonts.poppins(
-                  color: Colors.black87,
-                  fontSize: dialogWidth * 0.06,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              content: Text(
-                winner == 'P1'
-                    ? 'Player One Won!'
-                    : winner == 'P2'
-                        ? 'Player Two Won!'
-                        : 'It\'s a Draw!',
-                style: GoogleFonts.poppins(
-                  color: winner == 'P2'
-                      ? Colors.blue
-                      : winner == 'tied'
-                          ? Colors.brown
-                          : Colors.red,
-                  fontSize: dialogWidth * 0.05,
-                  fontWeight: FontWeight.w600,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              actions: [
-                TextButton(
-                  child: Text(
-                    'Play Again',
-                    style: GoogleFonts.poppins(
-                      fontSize: dialogWidth * 0.045,
-                      color: Colors.teal,
-                      fontWeight: FontWeight.bold,
-                    ),
+            child: Dialog(
+              backgroundColor:
+                  Colors.transparent, // Make the background transparent
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Color(0xFF0F2027),
+                      Color(0xFF203A43),
+                      Color(0xFF2C5364),
+                    ],
                   ),
-                  onPressed: () {
-                    OnlineCubit.get(context).playAgainReset();
-                    Navigator.pop(context);
-                  },
+                  borderRadius: BorderRadius.circular(20.0), // Rounded corners
                 ),
-              ],
+                padding: EdgeInsets.all(20.0), // Padding inside the dialog
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Game Over',
+                      style: GoogleFonts.poppins(
+                        color: Colors.white,
+                        fontSize: dialogWidth * 0.06,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      winner == 'P1'
+                          ? 'Player One Won!'
+                          : winner == 'P2'
+                              ? 'Player Two Won!'
+                              : 'It\'s a Draw!',
+                      style: GoogleFonts.poppins(
+                        color: winner == 'P2'
+                            ? Colors.blue
+                            : winner == 'tied'
+                                ? Colors.brown
+                                : Colors.red,
+                        fontSize: dialogWidth * 0.05,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 20),
+                    TextButton(
+                      child: Text(
+                        'Play Again',
+                        style: GoogleFonts.poppins(
+                          fontSize: dialogWidth * 0.045,
+                          color: Colors.teal,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      onPressed: () {
+                        OnlineCubit.get(context).playAgainReset();
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
+              ),
             ),
           );
         },

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tictactoefir/offline/cubit/logic_cubit.dart';
 import 'package:tictactoefir/offline/cubit/logic_state.dart';
+import 'package:tictactoefir/shared/components/winner_line.dart';
 
 class Offline extends StatelessWidget {
   const Offline({Key? key}) : super(key: key);
@@ -114,21 +115,37 @@ class Offline extends StatelessWidget {
       child: SizedBox(
         width: width * 0.8,
         height: width * 0.8,
-        child: GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            childAspectRatio: 1.0,
-            crossAxisSpacing: 10.0,
-            mainAxisSpacing: 10.0,
-          ),
-          itemCount: 9,
-          itemBuilder: (context, index) {
-            return _buildGameTile(context, index, width);
-          },
+        child: Stack(
+          children: [
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                childAspectRatio: 1.0,
+                crossAxisSpacing: 10.0,
+                mainAxisSpacing: 10.0,
+              ),
+              itemCount: 9,
+              itemBuilder: (context, index) {
+                return _buildGameTile(context, index, width);
+              },
+            ),
+            if (LogicCubit.get(context).iswinner)
+              _buildWinningLine(context, width),
+          ],
         ),
       ),
+    );
+  }
+
+  Widget _buildWinningLine(BuildContext context, double width) {
+    String? winningLine = LogicCubit.get(context).winningLine;
+    if (winningLine == null) return SizedBox.shrink();
+
+    return CustomPaint(
+      size: Size(width * 0.8, width * 0.8),
+      painter: WinningLinePainter(winningLine),
     );
   }
 
@@ -304,62 +321,75 @@ class Offline extends StatelessWidget {
         context: context,
         builder: (context) {
           final double dialogWidth = MediaQuery.of(context).size.width;
-          return AlertDialog(
-            backgroundColor: Colors.white.withOpacity(0.9),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(dialogWidth * 0.05),
-            ),
-            title: Text(
-              'Game Over',
-              style: GoogleFonts.poppins(
-                color: Colors.black87,
-                fontSize: dialogWidth * 0.06,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            content: Text(
-              LogicCubit.get(context).p1win
-                  ? 'Player One Won!'
-                  : LogicCubit.get(context).p2win
-                      ? 'Player Two Won!'
-                      : 'It\'s a Draw!',
-              style: GoogleFonts.poppins(
-                color: LogicCubit.get(context).p2win &&
-                        !LogicCubit.get(context).twopl
-                    ? Colors.blue
-                    : LogicCubit.get(context).tied
-                        ? Colors.brown
-                        : LogicCubit.get(context).xomessage,
-                fontSize: dialogWidth * 0.05,
-                fontWeight: FontWeight.w600,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            actions: [
-              TextButton(
-                child: Text(
-                  'Play Again',
-                  style: GoogleFonts.poppins(
-                    fontSize: dialogWidth * 0.045,
-                    color: Colors.teal,
-                    fontWeight: FontWeight.bold,
-                  ),
+          return Dialog(
+            backgroundColor:
+                Colors.transparent, // Make the background transparent
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color(0xFF0F2027),
+                    Color(0xFF203A43),
+                    Color(0xFF2C5364),
+                  ],
                 ),
-                onPressed: () {
-                  LogicCubit.get(context).xcountsave =
-                      LogicCubit.get(context).xcount;
-                  LogicCubit.get(context).ocountsave =
-                      LogicCubit.get(context).ocount;
-                  LogicCubit.get(context).reset();
-                  LogicCubit.get(context).xcount =
-                      LogicCubit.get(context).xcountsave;
-                  LogicCubit.get(context).ocount =
-                      LogicCubit.get(context).ocountsave;
-                  Navigator.pop(context);
-                },
+                borderRadius: BorderRadius.circular(20.0), // Rounded corners
               ),
-            ],
+              padding: EdgeInsets.all(20.0), // Padding inside the dialog
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Game Over',
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: dialogWidth * 0.06,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    LogicCubit.get(context).p1win
+                        ? 'Player One Won!'
+                        : LogicCubit.get(context).p2win
+                            ? 'Player Two Won!'
+                            : 'It\'s a Draw!',
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: dialogWidth * 0.05,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 20),
+                  TextButton(
+                    child: Text(
+                      'Play Again',
+                      style: GoogleFonts.poppins(
+                        fontSize: dialogWidth * 0.045,
+                        color: Colors.teal,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    onPressed: () {
+                      LogicCubit.get(context).xcountsave =
+                          LogicCubit.get(context).xcount;
+                      LogicCubit.get(context).ocountsave =
+                          LogicCubit.get(context).ocount;
+                      LogicCubit.get(context).reset();
+                      LogicCubit.get(context).xcount =
+                          LogicCubit.get(context).xcountsave;
+                      LogicCubit.get(context).ocount =
+                          LogicCubit.get(context).ocountsave;
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            ),
           );
         },
       );

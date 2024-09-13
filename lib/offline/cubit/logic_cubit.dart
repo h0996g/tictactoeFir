@@ -8,6 +8,7 @@ import 'logic_state.dart';
 
 class LogicCubit extends Cubit<LogicState> {
   LogicCubit() : super(LogicInitial());
+  String? winningLine;
   static LogicCubit get(context) => BlocProvider.of(context);
   bool iswinner = false;
   bool isnull = false;
@@ -45,6 +46,7 @@ class LogicCubit extends Cubit<LogicState> {
     GameButton(9)
   ];
   void reset() {
+    winningLine = null;
     for (int i = 0; i < 9; i++) {
       listButton[i].str = '';
       listButton[i].enabled = true;
@@ -93,6 +95,7 @@ class LogicCubit extends Cubit<LogicState> {
       // t = 0.15;
       // b = 0.15;
       iswinner = true;
+      winningLine = 'row0';
       emit(IsWinnerState());
     }
     if (player.contains(3) && player.contains(4) && player.contains(5)) {
@@ -101,6 +104,7 @@ class LogicCubit extends Cubit<LogicState> {
       // t = 0.44;
       // b = 0.44;
       iswinner = true;
+      winningLine = 'row1';
       emit(IsWinnerState());
     }
     if (player.contains(6) && player.contains(7) && player.contains(8)) {
@@ -109,6 +113,7 @@ class LogicCubit extends Cubit<LogicState> {
       // t = 0.72;
       // b = 0.72;
       iswinner = true;
+      winningLine = 'row2';
       emit(IsWinnerState());
     }
     if (player.contains(0) && player.contains(3) && player.contains(6)) {
@@ -117,6 +122,7 @@ class LogicCubit extends Cubit<LogicState> {
       // t = 0.089;
       // b = 0.79;
       iswinner = true;
+      winningLine = 'col0';
       emit(IsWinnerState());
     }
     if (player.contains(1) && player.contains(4) && player.contains(7)) {
@@ -125,6 +131,7 @@ class LogicCubit extends Cubit<LogicState> {
       // t = 0.089;
       // b = 0.79;
       iswinner = true;
+      winningLine = 'col1';
       emit(IsWinnerState());
     }
     if (player.contains(2) && player.contains(5) && player.contains(8)) {
@@ -133,6 +140,7 @@ class LogicCubit extends Cubit<LogicState> {
       // t = 0.089;
       // b = 0.79;
       iswinner = true;
+      winningLine = 'col2';
       emit(IsWinnerState());
     }
     if (player.contains(0) && player.contains(4) && player.contains(8)) {
@@ -141,6 +149,7 @@ class LogicCubit extends Cubit<LogicState> {
       // t = 0.08;
       // b = 0.8;
       iswinner = true;
+      winningLine = 'diag0';
       emit(IsWinnerState());
     }
     if (player.contains(2) && player.contains(4) && player.contains(6)) {
@@ -149,6 +158,7 @@ class LogicCubit extends Cubit<LogicState> {
       // t = 0.8;
       // b = 0.08;
       iswinner = true;
+      winningLine = 'diag0';
       emit(IsWinnerState());
     }
     // twopl ? turn = false : turn = true;
