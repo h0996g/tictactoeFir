@@ -299,7 +299,7 @@ class Online extends StatelessWidget {
                   Colors.transparent, // Make the background transparent
               child: Container(
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
+                  gradient: const LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
@@ -310,7 +310,8 @@ class Online extends StatelessWidget {
                   ),
                   borderRadius: BorderRadius.circular(20.0), // Rounded corners
                 ),
-                padding: EdgeInsets.all(20.0), // Padding inside the dialog
+                padding:
+                    const EdgeInsets.all(20.0), // Padding inside the dialog
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -323,7 +324,7 @@ class Online extends StatelessWidget {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Text(
                       winner == 'P1'
                           ? 'Player One Won!'
@@ -341,7 +342,7 @@ class Online extends StatelessWidget {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     TextButton(
                       child: Text(
                         'Play Again',

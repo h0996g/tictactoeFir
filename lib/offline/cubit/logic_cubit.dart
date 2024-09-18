@@ -158,7 +158,7 @@ class LogicCubit extends Cubit<LogicState> {
       // t = 0.8;
       // b = 0.08;
       iswinner = true;
-      winningLine = 'diag0';
+      winningLine = 'diag1';
       emit(IsWinnerState());
     }
     // twopl ? turn = false : turn = true;
