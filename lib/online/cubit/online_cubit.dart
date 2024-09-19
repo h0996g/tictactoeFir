@@ -79,10 +79,11 @@ class OnlineCubit extends Cubit<OnlineState> {
         .snapshots()
         .listen((event) {
       allcase = event.data() ?? {};
-      print(allcase);
+
+      // Update local game state
       for (var i = 0; i < listButton.length; i++) {
         listButton[i].str = allcase!['$i'];
-        listButton[i].enabled = (allcase!['$i'] == '' ? true : false);
+        listButton[i].enabled = (allcase!['$i'] == '');
         listButton[i].clr = (allcase!['$i'] == 'X'
             ? Colors.red
             : allcase!['$i'] == 'O'
@@ -90,13 +91,30 @@ class OnlineCubit extends Cubit<OnlineState> {
                 : Colors.grey[300]);
       }
 
-      if (allcase!['wating'] == false) {
-        isStart = true;
-      } else {
-        isStart = false;
+      isStart = !allcase!['wating'];
+
+      // Check for game end conditions
+      if (allcase!['win'] != '') {
+        handleGameEnd(allcase!['win']);
       }
+
+      // Emit state change
       emit(GetMessageDataStateGood());
     });
+  }
+
+  void handleGameEnd(String result) {
+    switch (result) {
+      case 'P1':
+        emit(P1WinState());
+        break;
+      case 'P2':
+        emit(P2WinState());
+        break;
+      case 'tied':
+        emit(TiedState());
+        break;
+    }
   }
 
   bool iswinner = false;
@@ -333,52 +351,59 @@ class OnlineCubit extends Cubit<OnlineState> {
   bool? turnLogic;
 
   Future<void> playGame(int index) async {
-    // player 1
     if (turnLogic == allcase!['turn']) {
-      allcase!['turn']
-          ? listButton[index].str = 'X'
-          : listButton[index].str = 'O';
+      Map<String, dynamic> updates = {};
 
-      await FirebaseFirestore.instance
-          .collection('Room')
-          .doc(id.toString())
-          .update({'$index': allcase!['turn'] ? 'X' : 'O'});
+      // Update the game board
+      String playerSymbol = allcase!['turn'] ? 'X' : 'O';
+      updates['$index'] = playerSymbol;
+
+      // Update the turn
+      updates['turn'] = !allcase!['turn'];
+
+      // Update the local state
+      listButton[index].str = playerSymbol;
       listButton[index].enabled = false;
+      listButton[index].clr = allcase!['turn'] ? Colors.red : Colors.blue;
 
-      listButton[index].clr = allcase!['turn'] ? Colors.red : Colors.green;
-      // player1.add(index);
-      // machineindex.remove(index);
+      // Check for winner or tie
+      bool isWinner = checkWinnerLocally(playerSymbol);
+      bool isTie = checkTieLocally();
 
+      if (isWinner) {
+        updates['win'] = allcase!['turn'] ? 'P1' : 'P2';
+        updates[allcase!['turn'] ? 'scorP1' : 'scorP2'] =
+            FieldValue.increment(1);
+      } else if (isTie) {
+        updates['win'] = 'tied';
+      }
+
+      // Apply all updates to Firestore in a single operation
       await FirebaseFirestore.instance
           .collection('Room')
           .doc(id.toString())
-          .update({'turn': !allcase!['turn']});
-
-      // emit(P1PlayState());
+          .update(updates);
     }
-    await checkWinner('X');
-    if (!iswinner) {
-      await checkWinner('O');
-    }
+  }
 
-    checkNull();
-    if (!iswinner && isnull) {
-      await FirebaseFirestore.instance
-          .collection('Room')
-          .doc(id.toString())
-          .update({'win': 'tied'});
-      // tied = true;
-      emit(TiedState());
-      return;
-    }
+  bool checkWinnerLocally(String player) {
+    List<List<int>> winPatterns = [
+      [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+      [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+      [0, 4, 8], [2, 4, 6] // Diagonals
+    ];
 
-    // if (twopl) {
-    //   if (xomessage == Colors.red) {
-    //     xomessage = Colors.blue;
-    //   } else {
-    //     xomessage = Colors.red;
-    //   }
-    //   emit(ColorSwitchState());
-    // }
+    for (var pattern in winPatterns) {
+      if (listButton[pattern[0]].str == player &&
+          listButton[pattern[1]].str == player &&
+          listButton[pattern[2]].str == player) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool checkTieLocally() {
+    return listButton.every((button) => button.str != '');
   }
 }

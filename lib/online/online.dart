@@ -123,7 +123,9 @@ class Online extends StatelessWidget {
   Widget _buildGameTile(BuildContext context, int index, double width) {
     return GestureDetector(
       onTap: () {
-        if (OnlineCubit.get(context).listButton[index].enabled) {
+        if (OnlineCubit.get(context).listButton[index].enabled &&
+            OnlineCubit.get(context).turnLogic ==
+                OnlineCubit.get(context).allcase!['turn']) {
           OnlineCubit.get(context).playGame(index);
         }
       },
