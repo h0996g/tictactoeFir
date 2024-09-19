@@ -12,6 +12,7 @@ class OnlineCubit extends Cubit<OnlineState> {
   static OnlineCubit get(context) => BlocProvider.of(context);
   var rng = Random();
   int? id;
+  String? winningLine;
 
   void getRandom() {
     id = rng.nextInt(10000);
@@ -92,6 +93,7 @@ class OnlineCubit extends Cubit<OnlineState> {
       }
 
       isStart = !allcase!['wating'];
+      winningLine = allcase!['winningLine']; // Add this line
 
       // Check for game end conditions
       if (allcase!['win'] != '') {
@@ -119,10 +121,6 @@ class OnlineCubit extends Cubit<OnlineState> {
 
   bool iswinner = false;
   bool isnull = false;
-  // bool twopl = true;
-
-  // Color xomessage = Colors.red;
-  // double l = 0, r = 0, t = 0, b = 0;
 
   Random random = Random();
   bool xTurn = true;
@@ -140,14 +138,12 @@ class OnlineCubit extends Cubit<OnlineState> {
     GameButton(9)
   ];
   Future<void> playAgainReset() async {
+    winningLine = null;
+
     for (int i = 0; i < 9; i++) {
       listButton[i].str = '';
       listButton[i].enabled = true;
       listButton[i].clr = Colors.grey[300];
-      // l = 0;
-      // r = 0;
-      // t = 0;
-      // b = 0;
     }
     iswinner = false;
     isnull = false;
@@ -166,8 +162,7 @@ class OnlineCubit extends Cubit<OnlineState> {
       '6': '',
       '7': '',
       '8': '',
-      // 'scorP1': 0,
-      // 'scorP2': 0,
+      'winningLine': null,
       'turn': true,
       'win': ''
     });
@@ -175,25 +170,16 @@ class OnlineCubit extends Cubit<OnlineState> {
   }
 
   Future<void> endGameReset() async {
-    // int? idend = id;
-    // id = ;
-
+    winningLine = null;
     for (int i = 0; i < 9; i++) {
       listButton[i].str = '';
       listButton[i].enabled = true;
       listButton[i].clr = Colors.grey[300];
-      // l = 0;
-      // r = 0;
-      // t = 0;
-      // b = 0;
     }
     iswinner = false;
     isnull = false;
     xTurn = true;
     isStart = false;
-    // a.cancel();
-    // isStart = false;
-    // int? idTemp=id;
 
     await FirebaseFirestore.instance
         .collection('Room')
@@ -204,148 +190,6 @@ class OnlineCubit extends Cubit<OnlineState> {
         .doc(id.toString())
         .delete();
     emit(EndGameResetValueState());
-  }
-
-  Future<void> checkWinner(String player) async {
-    if (allcase!['0'] == player &&
-        allcase!['1'] == player &&
-        allcase!['2'] == player) {
-      // l = 0.1;
-      // r = 0.9;
-      // t = 0.15;
-      // b = 0.15;
-      iswinner = true;
-      // emit(IsWinnerState());
-      // return;
-    }
-    if (allcase!['3'] == player &&
-        allcase!['4'] == player &&
-        allcase!['5'] == player) {
-      // l = 0.1;
-      // r = 0.9;
-      // t = 0.44;
-      // b = 0.44;
-      iswinner = true;
-      // emit(IsWinnerState());
-      // return;
-    }
-    if (allcase!['6'] == player &&
-        allcase!['7'] == player &&
-        allcase!['8'] == player) {
-      // l = 0.1;
-      // r = 0.9;
-      // t = 0.72;
-      // b = 0.72;
-      iswinner = true;
-      // emit(IsWinnerState());
-      // return;
-    }
-    if (allcase!['0'] == player &&
-        allcase!['3'] == player &&
-        allcase!['6'] == player) {
-      // l = 0.174;
-      // r = 0.174;
-      // t = 0.089;
-      // b = 0.79;
-      iswinner = true;
-      // emit(IsWinnerState());
-      // return;
-    }
-    if (allcase!['1'] == player &&
-        allcase!['4'] == player &&
-        allcase!['7'] == player) {
-      // l = 1 / 2;
-      // r = 1 / 2;
-      // t = 0.089;
-      // b = 0.79;
-      iswinner = true;
-      // emit(IsWinnerState());
-      // return;
-    }
-    if (allcase!['2'] == player &&
-        allcase!['5'] == player &&
-        allcase!['8'] == player) {
-      // l = 0.83;
-      // r = 0.83;
-      // t = 0.089;
-      // b = 0.79;
-      iswinner = true;
-      // emit(IsWinnerState());
-      // return;
-    }
-    if (allcase!['0'] == player &&
-        allcase!['4'] == player &&
-        allcase!['8'] == player) {
-      // l = 0.9;
-      // r = 0.1;
-      // t = 0.08;
-      // b = 0.8;
-      iswinner = true;
-      // emit(IsWinnerState());
-      // return;
-    }
-    if (allcase!['2'] == player &&
-        allcase!['4'] == player &&
-        allcase!['6'] == player) {
-      // l = 0.9;
-      // r = 0.1;
-      // t = 0.8;
-      // b = 0.08;
-      iswinner = true;
-      // emit(IsWinnerState());
-      // return;
-    }
-    // twopl ? turn = false : turn = true;
-    if (iswinner && player == 'X') {
-      for (int i = 0; i < 9; i++) {
-        listButton[i].enabled = false;
-        listButton[i].clr = Colors.red;
-      }
-      //kima yrb7 p1 yb9a mktob dalet x
-      // !
-      // turn = true;
-      // twopl ? turn = false : turn = true;
-
-      // p1win = true;
-      await FirebaseFirestore.instance
-          .collection('Room')
-          .doc(id.toString())
-          .update({'win': 'P1', 'scorP1': allcase!['scorP1'] + 1});
-      print('P1 Rba7');
-
-      emit(P1WinState());
-      return;
-    } else if (iswinner && player == 'O') {
-      print('kfh Dkhol');
-      for (int i = 0; i < 9; i++) {
-        listButton[i].enabled = false;
-        listButton[i].clr = Colors.blue;
-      }
-      //kima yrb7 p1 yb9a mktob dalet x
-      // !
-      // turn = true;
-      // twopl ? turn = false : turn = true;
-
-      // p2win = true;
-      await FirebaseFirestore.instance
-          .collection('Room')
-          .doc(id.toString())
-          .update({'win': 'P2', 'scorP2': allcase!['scorP2'] + 1});
-      // ocount++;
-      emit(P2WinState());
-      return;
-    }
-    // emit(IsWinnerState());
-    print('IsWinnerState()');
-    return;
-  }
-
-  void checkNull() {
-    for (int i = 0; i < 9; i++) {
-      if (listButton[i].enabled) return;
-    }
-    isnull = true;
-    emit(IsNullState());
   }
 
   bool? turnLogic;
@@ -374,6 +218,7 @@ class OnlineCubit extends Cubit<OnlineState> {
         updates['win'] = allcase!['turn'] ? 'P1' : 'P2';
         updates[allcase!['turn'] ? 'scorP1' : 'scorP2'] =
             FieldValue.increment(1);
+        updates['winningLine'] = winningLine; // Add this line
       } else if (isTie) {
         updates['win'] = 'tied';
       }
@@ -393,10 +238,40 @@ class OnlineCubit extends Cubit<OnlineState> {
       [0, 4, 8], [2, 4, 6] // Diagonals
     ];
 
-    for (var pattern in winPatterns) {
+    for (int i = 0; i < winPatterns.length; i++) {
+      var pattern = winPatterns[i];
       if (listButton[pattern[0]].str == player &&
           listButton[pattern[1]].str == player &&
           listButton[pattern[2]].str == player) {
+        winningLine;
+        switch (i) {
+          case 0:
+            winningLine = 'row0';
+            break;
+          case 1:
+            winningLine = 'row1';
+            break;
+          case 2:
+            winningLine = 'row2';
+            break;
+          case 3:
+            winningLine = 'col0';
+            break;
+          case 4:
+            winningLine = 'col1';
+            break;
+          case 5:
+            winningLine = 'col2';
+            break;
+          case 6:
+            winningLine = 'diag0';
+            break;
+          case 7:
+            winningLine = 'diag1';
+            break;
+          default:
+            winningLine = ''; // This should never happen
+        }
         return true;
       }
     }

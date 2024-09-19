@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tictactoefir/online/cubit/online_cubit.dart';
 import 'package:tictactoefir/online/cubit/online_state.dart';
+import 'package:tictactoefir/shared/components/winner_line.dart';
 
 class Online extends StatelessWidget {
   const Online({Key? key}) : super(key: key);
@@ -102,21 +103,36 @@ class Online extends StatelessWidget {
       child: SizedBox(
         width: width * 0.8,
         height: width * 0.8,
-        child: GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            childAspectRatio: 1.0,
-            crossAxisSpacing: 10.0,
-            mainAxisSpacing: 10.0,
-          ),
-          itemCount: 9,
-          itemBuilder: (context, index) {
-            return _buildGameTile(context, index, width);
-          },
+        child: Stack(
+          children: [
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                childAspectRatio: 1.0,
+                crossAxisSpacing: 10.0,
+                mainAxisSpacing: 10.0,
+              ),
+              itemCount: 9,
+              itemBuilder: (context, index) {
+                return _buildGameTile(context, index, width);
+              },
+            ),
+            _buildWinningLine(context, width),
+          ],
         ),
       ),
+    );
+  }
+
+  Widget _buildWinningLine(BuildContext context, double width) {
+    String? winningLine = OnlineCubit.get(context).allcase!['winningLine'];
+    if (winningLine == null) return const SizedBox.shrink();
+
+    return CustomPaint(
+      size: Size(width * 0.8, width * 0.8),
+      painter: WinningLinePainter(winningLine),
     );
   }
 
