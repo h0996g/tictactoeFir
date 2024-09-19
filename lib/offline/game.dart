@@ -1,53 +1,85 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tictactoefir/offline/cubit/logic_cubit.dart';
 import 'package:tictactoefir/offline/cubit/logic_state.dart';
+import 'package:tictactoefir/shared/components/winner_line.dart';
 
 class Offline extends StatelessWidget {
   const Offline({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.of(context).size;
+    final double width = screenSize.width;
+    final double height = screenSize.height;
+
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364)],
-          ),
-        ),
-        child: SafeArea(
-          child: BlocConsumer<LogicCubit, LogicState>(
-            listener: (context, state) {
-              // TODO: implement listener
-            },
-            builder: (context, state) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildMultiplayerToggle(context),
-                  _buildGameBoard(context),
-                  _buildTurnIndicator(context),
-                  _buildScoreBoard(context),
-                  _buildActionButtons(context),
+      body: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          return Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xFF0F2027),
+                  Color(0xFF203A43),
+                  Color(0xFF2C5364)
                 ],
-              );
-            },
-          ),
-        ),
+              ),
+            ),
+            child: SafeArea(
+              child: BlocConsumer<LogicCubit, LogicState>(
+                listener: (context, state) {
+                  // TODO: implement listener
+                },
+                builder: (context, state) {
+                  return SingleChildScrollView(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: constraints.maxHeight -
+                            MediaQuery.of(context).padding.top,
+                      ),
+                      child: IntrinsicHeight(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            SizedBox(height: height * 0.02),
+                            _buildMultiplayerToggle(context, width, height),
+                            SizedBox(height: height * 0.02),
+                            _buildGameBoard(context, width),
+                            SizedBox(height: height * 0.02),
+                            _buildTurnIndicator(context, width),
+                            SizedBox(height: height * 0.02),
+                            _buildScoreBoard(context, width),
+                            SizedBox(height: height * 0.02),
+                            _buildActionButtons(context, width),
+                            SizedBox(height: height * 0.02),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          );
+        },
       ),
     );
   }
 
-  Widget _buildMultiplayerToggle(BuildContext context) {
+  Widget _buildMultiplayerToggle(
+      BuildContext context, double width, double height) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      margin: EdgeInsets.symmetric(horizontal: width * 0.05),
+      padding: EdgeInsets.symmetric(
+          horizontal: width * 0.05, vertical: height * 0.01),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(width * 0.08),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -56,7 +88,7 @@ class Offline extends StatelessWidget {
             'Multiplayer',
             style: GoogleFonts.poppins(
               color: Colors.white,
-              fontSize: 18,
+              fontSize: width * 0.045,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -73,31 +105,51 @@ class Offline extends StatelessWidget {
     );
   }
 
-  Widget _buildGameBoard(BuildContext context) {
+  Widget _buildGameBoard(BuildContext context, double width) {
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding: EdgeInsets.all(width * 0.02),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(width * 0.05),
       ),
-      child: GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          childAspectRatio: 1.0,
-          crossAxisSpacing: 10.0,
-          mainAxisSpacing: 10.0,
+      child: SizedBox(
+        width: width * 0.8,
+        height: width * 0.8,
+        child: Stack(
+          children: [
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                childAspectRatio: 1.0,
+                crossAxisSpacing: 10.0,
+                mainAxisSpacing: 10.0,
+              ),
+              itemCount: 9,
+              itemBuilder: (context, index) {
+                return _buildGameTile(context, index, width);
+              },
+            ),
+            if (LogicCubit.get(context).iswinner)
+              _buildWinningLine(context, width),
+          ],
         ),
-        itemCount: 9,
-        itemBuilder: (context, index) {
-          return _buildGameTile(context, index);
-        },
       ),
     );
   }
 
-  Widget _buildGameTile(BuildContext context, int index) {
+  Widget _buildWinningLine(BuildContext context, double width) {
+    String? winningLine = LogicCubit.get(context).winningLine;
+    if (winningLine == null) return SizedBox.shrink();
+
+    return CustomPaint(
+      size: Size(width * 0.8, width * 0.8),
+      painter: WinningLinePainter(winningLine),
+    );
+  }
+
+  Widget _buildGameTile(BuildContext context, int index, double width) {
     return GestureDetector(
       onTap: () {
         if (LogicCubit.get(context).listButton[index].enabled) {
@@ -109,7 +161,7 @@ class Offline extends StatelessWidget {
         duration: const Duration(milliseconds: 300),
         decoration: BoxDecoration(
           color: LogicCubit.get(context).listButton[index].clr.withOpacity(0.7),
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(width * 0.03),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.2),
@@ -123,7 +175,7 @@ class Offline extends StatelessWidget {
             LogicCubit.get(context).listButton[index].str,
             style: GoogleFonts.poppins(
               color: Colors.white,
-              fontSize: 60.0,
+              fontSize: width * 0.15,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -132,12 +184,13 @@ class Offline extends StatelessWidget {
     );
   }
 
-  Widget _buildTurnIndicator(BuildContext context) {
+  Widget _buildTurnIndicator(BuildContext context, double width) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: EdgeInsets.symmetric(
+          horizontal: width * 0.05, vertical: width * 0.02),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(width * 0.08),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -146,16 +199,16 @@ class Offline extends StatelessWidget {
             LogicCubit.get(context).turn ? 'X' : 'O',
             style: GoogleFonts.poppins(
               color: LogicCubit.get(context).xomessage,
-              fontSize: 30,
+              fontSize: width * 0.08,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(width: 10),
+          SizedBox(width: width * 0.02),
           Text(
             'TURN',
             style: GoogleFonts.poppins(
               color: Colors.white,
-              fontSize: 30,
+              fontSize: width * 0.08,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -164,42 +217,45 @@ class Offline extends StatelessWidget {
     );
   }
 
-  Widget _buildScoreBoard(BuildContext context) {
+  Widget _buildScoreBoard(BuildContext context, double width) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: EdgeInsets.symmetric(
+          horizontal: width * 0.05, vertical: width * 0.02),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(width * 0.04),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _buildPlayerScore('Player One', LogicCubit.get(context).xcount),
+          _buildPlayerScore(
+              'Player One', LogicCubit.get(context).xcount, width),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
+            padding: EdgeInsets.symmetric(horizontal: width * 0.02),
             child: Text(
               '-',
               style: GoogleFonts.poppins(
                 color: Colors.white,
-                fontSize: 24,
+                fontSize: width * 0.06,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          _buildPlayerScore('Player Two', LogicCubit.get(context).ocount),
+          _buildPlayerScore(
+              'Player Two', LogicCubit.get(context).ocount, width),
         ],
       ),
     );
   }
 
-  Widget _buildPlayerScore(String player, int score) {
+  Widget _buildPlayerScore(String player, int score, double width) {
     return Column(
       children: [
         Text(
           player,
           style: GoogleFonts.poppins(
             color: Colors.white,
-            fontSize: 16,
+            fontSize: width * 0.04,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -207,7 +263,7 @@ class Offline extends StatelessWidget {
           score.toString(),
           style: GoogleFonts.poppins(
             color: Colors.white,
-            fontSize: 24,
+            fontSize: width * 0.06,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -215,33 +271,26 @@ class Offline extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButtons(BuildContext context) {
+  Widget _buildActionButtons(BuildContext context, double width) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        _buildActionButton(
-          'New Game',
-          Icons.refresh,
-          () {
-            LogicCubit.get(context).xcountsave = LogicCubit.get(context).xcount;
-            LogicCubit.get(context).ocountsave = LogicCubit.get(context).ocount;
-            LogicCubit.get(context).reset();
-            LogicCubit.get(context).xcount = LogicCubit.get(context).xcountsave;
-            LogicCubit.get(context).ocount = LogicCubit.get(context).ocountsave;
-          },
-        ),
-        _buildActionButton(
-          'End Game',
-          Icons.stop,
-          () {
-            LogicCubit.get(context).reset();
-          },
-        ),
+        _buildActionButton('New Game', Icons.refresh, () {
+          LogicCubit.get(context).xcountsave = LogicCubit.get(context).xcount;
+          LogicCubit.get(context).ocountsave = LogicCubit.get(context).ocount;
+          LogicCubit.get(context).reset();
+          LogicCubit.get(context).xcount = LogicCubit.get(context).xcountsave;
+          LogicCubit.get(context).ocount = LogicCubit.get(context).ocountsave;
+        }, width),
+        _buildActionButton('End Game', Icons.stop, () {
+          LogicCubit.get(context).reset();
+        }, width),
       ],
     );
   }
 
-  Widget _buildActionButton(String text, IconData icon, VoidCallback onTap) {
+  Widget _buildActionButton(
+      String text, IconData icon, VoidCallback onTap, double width) {
     return ElevatedButton.icon(
       onPressed: onTap,
       icon: Icon(icon, color: Colors.white),
@@ -249,15 +298,16 @@ class Offline extends StatelessWidget {
         text,
         style: GoogleFonts.poppins(
           color: Colors.white,
-          fontSize: 16,
+          fontSize: width * 0.04,
           fontWeight: FontWeight.w600,
         ),
       ),
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color(0xFF2C5364),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        padding: EdgeInsets.symmetric(
+            horizontal: width * 0.05, vertical: width * 0.03),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(width * 0.08),
         ),
       ),
     );
@@ -270,62 +320,76 @@ class Offline extends StatelessWidget {
       showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
-            backgroundColor: Colors.white.withOpacity(0.9),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            title: Text(
-              'Game Over',
-              style: GoogleFonts.poppins(
-                color: Colors.black87,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            content: Text(
-              LogicCubit.get(context).p1win
-                  ? 'Player One Won!'
-                  : LogicCubit.get(context).p2win
-                      ? 'Player Two Won!'
-                      : 'It\'s a Draw!',
-              style: GoogleFonts.poppins(
-                color: LogicCubit.get(context).p2win &&
-                        !LogicCubit.get(context).twopl
-                    ? Colors.blue
-                    : LogicCubit.get(context).tied
-                        ? Colors.brown
-                        : LogicCubit.get(context).xomessage,
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            actions: [
-              TextButton(
-                child: Text(
-                  'Play Again',
-                  style: GoogleFonts.poppins(
-                    fontSize: 18,
-                    color: Colors.teal,
-                    fontWeight: FontWeight.bold,
-                  ),
+          final double dialogWidth = MediaQuery.of(context).size.width;
+          return Dialog(
+            backgroundColor:
+                Colors.transparent, // Make the background transparent
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color(0xFF0F2027),
+                    Color(0xFF203A43),
+                    Color(0xFF2C5364),
+                  ],
                 ),
-                onPressed: () {
-                  LogicCubit.get(context).xcountsave =
-                      LogicCubit.get(context).xcount;
-                  LogicCubit.get(context).ocountsave =
-                      LogicCubit.get(context).ocount;
-                  LogicCubit.get(context).reset();
-                  LogicCubit.get(context).xcount =
-                      LogicCubit.get(context).xcountsave;
-                  LogicCubit.get(context).ocount =
-                      LogicCubit.get(context).ocountsave;
-                  Navigator.pop(context);
-                },
+                borderRadius: BorderRadius.circular(20.0), // Rounded corners
               ),
-            ],
+              padding: EdgeInsets.all(20.0), // Padding inside the dialog
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Game Over',
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: dialogWidth * 0.06,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    LogicCubit.get(context).p1win
+                        ? 'Player One Won!'
+                        : LogicCubit.get(context).p2win
+                            ? 'Player Two Won!'
+                            : 'It\'s a Draw!',
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: dialogWidth * 0.05,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 20),
+                  TextButton(
+                    child: Text(
+                      'Play Again',
+                      style: GoogleFonts.poppins(
+                        fontSize: dialogWidth * 0.045,
+                        color: Colors.teal,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    onPressed: () {
+                      LogicCubit.get(context).xcountsave =
+                          LogicCubit.get(context).xcount;
+                      LogicCubit.get(context).ocountsave =
+                          LogicCubit.get(context).ocount;
+                      LogicCubit.get(context).reset();
+                      LogicCubit.get(context).xcount =
+                          LogicCubit.get(context).xcountsave;
+                      LogicCubit.get(context).ocount =
+                          LogicCubit.get(context).ocountsave;
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            ),
           );
         },
       );
