@@ -8,7 +8,7 @@ import 'package:tictactoefir/online/cubit/online_state.dart';
 import 'package:tictactoefir/shared/components/components.dart';
 
 class CreeRoom extends StatefulWidget {
-  const CreeRoom({Key? key}) : super(key: key);
+  const CreeRoom({super.key});
 
   @override
   State<CreeRoom> createState() => _CreeRoomState();

@@ -5,8 +5,27 @@ import 'package:tictactoefir/online/cubit/online_cubit.dart';
 import 'package:tictactoefir/online/cubit/online_state.dart';
 import 'package:tictactoefir/shared/components/winner_line.dart';
 
-class Online extends StatelessWidget {
-  const Online({Key? key}) : super(key: key);
+class Online extends StatefulWidget {
+  const Online({super.key});
+
+  @override
+  State<Online> createState() => _OnlineState();
+}
+
+class _OnlineState extends State<Online> {
+  late OnlineCubit _onlineCubit;
+  @override
+  void initState() {
+    super.initState();
+    _onlineCubit = OnlineCubit.get(context);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _onlineCubit.endGameReset();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
